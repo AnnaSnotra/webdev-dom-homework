@@ -69,11 +69,14 @@
   const commentInputElement = document.getElementById('comment-input')
   const newDate = new Date()
 
+  document.getElementById('name-input').value = '';
+  document.getElementById('comment-input').value = '';
+
+
   buttonElement.addEventListener("click", () => {
 
     nameInputElement.classList.remove("error");
     commentInputElement.classList.remove("error");
-    buttonElement.classList.remove("error");
 
     if (nameInputElement.value === "") {
       nameInputElement.classList.add("error");
@@ -83,7 +86,6 @@
       commentInputElement.classList.add("error");
       return;
     }
-
 
     const oldCommentHtml = commentElement.innerHTML;
     commentElement.innerHTML = oldCommentHtml + `<li class="comment">
@@ -104,6 +106,13 @@
           </div>
         </li>`;
   })
+
+
+
+ // function clearSearch() {
+ //   document.getElementById('name-input').value = '';
+ //   document.getElementById('comment-input').value = '';
+ // }
 
 
   //
