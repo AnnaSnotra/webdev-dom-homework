@@ -10,6 +10,7 @@
 <body>
   <div class="container">
     <ul id="comments" class="comments">
+      <!-- Список рендерится из JS -->
     </ul>
     <div class="add-form">
       <input id="name-input" type="text" class="add-form-name" placeholder="Введите ваше имя" />
@@ -29,6 +30,7 @@
 
 <script>
 
+  // переменные из html
   const buttonElement = document.getElementById('add-form-button');
   const commentElement = document.getElementById('comments');
   const nameInputElement = document.getElementById('name-input');
@@ -38,6 +40,7 @@
 
   const listElement = document.getElementById("comments");
 
+  // изначально данные комментарии
   const comments = [
     {
       name: 'Глеб Фокин',
@@ -57,6 +60,8 @@
     },
   ];
 
+
+  //  добавление/удаление лайка
   const initEventListeners = () => {
     const buttonElements = document.querySelectorAll(".like-button");
 
@@ -72,12 +77,13 @@
           comments[index].isLiked = true;
           comments[index].like++;
         }
-
+        // вызываем рендер-функцию чтобы отобразить новые данные
         renderComments();
       });
     }
   };
 
+  // рендер-функция элементов списка комментариев, эта функция превращает данные в html разметку
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
       return `<li class="comment">
@@ -100,14 +106,16 @@
         </li>`
     }).join('');
 
-    listElement.innerHTML = commentsHtml;
 
+    // кладем измененную разметку в inner HTML
+    listElement.innerHTML = commentsHtml;
+    // добавляет обработчик клика на элемент списка
     initEventListeners();
 
   };
-
+  // вызываем рендер-функцию чтобы отобразить новые данные
   renderComments();
-
+  // находит все элементы списка
   const likesElements = document.querySelectorAll(".likes");
 
 
@@ -118,7 +126,7 @@
 
   renderComments();
 
-
+  // подсвечивание поля ввода красным цветом при отсутствии данных
   buttonElement.addEventListener("click", () => {
 
     nameInputElement.classList.remove("error");
@@ -133,6 +141,7 @@
       return;
     }
 
+    // добавление нового комментария
     comments.push({
       name: nameInputElement.value,
       date: newDate,
@@ -140,8 +149,11 @@
       like: 0,
       isLike: false,
     });
+    // вызываем рендер-функцию чтобы отобразить новые данные
     renderComments();
 
+
+    // очищение полей ввода после добавления комментария
     document.getElementById('name-input').value = '';
     document.getElementById('comment-input').value = '';
 
