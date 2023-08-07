@@ -96,7 +96,7 @@
               ${comment.comment}
             </div>`}
           </div>
-          <button class="add-form-button" data-index="${index}">${comment.isEdit ? 'Сохранить' : 'Редактировать'}</button>
+          <button class="change-form-button" data-index="${index}">${comment.isEdit ? 'Сохранить' : 'Редактировать'}</button>
           <div class="comment-footer">
             <div class="likes">
               <span class="likes-counter">${comment.like}</span>
@@ -105,6 +105,7 @@
           </div>
         </li>`
     }).join('');
+
 
 
     // кладем измененную разметку в inner HTML
@@ -148,10 +149,33 @@
       comment: commentInputElement.value,
       like: 0,
       isLike: false,
+      isEdit: false,
     });
     // вызываем рендер-функцию чтобы отобразить новые данные
     renderComments();
 
+    // попытка сделать кнопки "редактировать" и "сохранить" интерактивными
+    const initButtonEvents = () => {
+      const changeButtonElements = document.querySelectorAll(".change-form-button");
+
+      for (const changeButtonElement of ocument.querySelectorAll(".change-form-button")) {
+        changeButtonElement.addEventListener("click", () => {
+          // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
+          const index = changeButtonElement.dataset.index;
+          // обращаемся к свойству isEdit объекта, который мы получили из массива Comments по индексу
+          if (comments[index].isEdit) {
+            comments[index].isEdit = false;
+          } else {
+            comments[index].isEdit = true;
+          }
+          // вызываем рендер-функцию чтобы отобразить новые данные
+          renderComments();
+          initButtonEvents();
+        });
+      }
+    };
+
+    initEventListeners();
 
     // очищение полей ввода после добавления комментария
     document.getElementById('name-input').value = '';
