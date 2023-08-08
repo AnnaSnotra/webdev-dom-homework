@@ -61,7 +61,7 @@
   ];
 
 
-  //  добавление/удаление лайка
+  //  добавление/удаление лайка (обработчик клика)
   const initEventListeners = () => {
     const buttonElements = document.querySelectorAll(".like-button");
 
@@ -85,7 +85,7 @@
   };
 
 
-  // редактирование комментария
+  // редактирование комментария (обработчик клика)
   const initButtonEvents = () => {
     const changeButtonElements = document.querySelectorAll(".change-form-button");
     for (const changeButtonElement of changeButtonElements) {
@@ -106,7 +106,7 @@
     }
   };
 
-  // ответ на комментарий
+  // ответ на комментарий (обработчик клика)
   const initCommentEvents = () => {
     const liElements = document.querySelectorAll(".comment");
     for (const liElement of liElements) {
@@ -158,7 +158,7 @@
 
 
 
-  // подсвечивание поля ввода красным цветом при отсутствии данных
+  // подсвечивание поля ввода красным цветом при отсутствии данных (обработчик клика)
   buttonElement.addEventListener("click", () => {
 
     nameInputElement.classList.remove("error");
