@@ -121,7 +121,7 @@
         // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
         // Получение значения из data-* атрибутов разметки
         const index = liElement.dataset.index;
-        commentInputElement.value = '>' + '  ' + comments[index].comment + '   ' + '\n' + comments[index].name + ', ';
+        commentInputElement.value = '>' + '  ' + comments[index].comment + '  \n ' + '\n' + comments[index].name + ', ';
         renderComments();
       });
     }
