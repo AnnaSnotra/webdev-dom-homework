@@ -67,8 +67,12 @@
 
     for (const buttonElement of buttonElements) {
       buttonElement.addEventListener("click", (event) => {
+        // отключение всплытия дочернего элемента DOM/ stopPropagation() отключает всплытие события вверх по дереву
+        // отключение всплытия у события через stopPropagation,
+        // обработчики клика на родительских элементах не будут вызываться после отключения
         event.stopPropagation();
         // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
+        // Получение значения из data-* атрибутов разметки
         const index = buttonElement.dataset.index;
         // обращаемся к свойству isLiked объекта, который мы получили из массива Comments по индексу
         if (comments[index].isLiked) {
@@ -88,9 +92,11 @@
   // редактирование комментария (обработчик клика)
   const initButtonEvents = () => {
     const changeButtonElements = document.querySelectorAll(".change-form-button");
+    // добавление обработчиков клика на динамически созданные элементы
     for (const changeButtonElement of changeButtonElements) {
       changeButtonElement.addEventListener("click", () => {
         // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
+        // Получение значения из data-* атрибутов разметки
         const index = changeButtonElement.dataset.index;
         const textarea = document.getElementById(`comment-input-${index}`);
         // обращаемся к свойству isEdit объекта, который мы получили из массива Comments по индексу
@@ -109,11 +115,13 @@
   // ответ на комментарий (обработчик клика)
   const initCommentEvents = () => {
     const liElements = document.querySelectorAll(".comment");
+    // добавление обработчиков клика на динамически созданные элементы
     for (const liElement of liElements) {
       liElement.addEventListener("click", () => {
         // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
+        // Получение значения из data-* атрибутов разметки
         const index = liElement.dataset.index;
-        commentInputElement.value = '>' + ' ' + comments[index].comment + '   ' + comments[index].name + ', ';
+        commentInputElement.value = '>' + '  ' + comments[index].comment + '   ' + '\n' + comments[index].name + ', ';
         renderComments();
       });
     }
@@ -123,6 +131,7 @@
 
   // рендер-функция элементов списка комментариев, эта функция превращает данные в html разметку
   const renderComments = () => {
+    // Преобразование данных в HTML-разметку с помощью map и join
     const commentsHtml = comments.map((comment, index) => {
       return `<li class="comment" data-index="${index}">
           <div class="comment-header">
@@ -144,7 +153,7 @@
         </li>`
     }).join('');
 
-    // кладем измененную разметку в inner HTML
+    // кладем измененную разметку в inner HTML/ рендер HTML-строки в браузер
     listElement.innerHTML = commentsHtml;
     // добавляет обработчик клика на элемент списка
     initEventListeners();
@@ -153,14 +162,14 @@
   };
   // вызываем рендер-функцию чтобы отобразить новые данные
   renderComments();
-  // находит кнопки лайков списка (все элементы списка - class = ".comments")
+  // находит кнопки лайков списка (все элементы списка - class = ".comments")/ поиск динамически создаваемых элементов разметки
   const likesElements = document.querySelectorAll(".likes");
 
 
 
   // подсвечивание поля ввода красным цветом при отсутствии данных (обработчик клика)
   buttonElement.addEventListener("click", () => {
-
+    // Управляем классами на элементах с помощью classList
     nameInputElement.classList.remove("error");
     commentInputElement.classList.remove("error");
 
@@ -175,6 +184,7 @@
 
     // добавление нового комментария
     comments.push({
+      // Получаем значение из инпута через свойство value
       name: nameInputElement.value
         // Метод строки replaceAll заменяет все вхождения подстроки из первого аргумента на второй
         .replaceAll("&", "&amp;")
