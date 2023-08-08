@@ -30,7 +30,7 @@
 
 <script>
 
-  // переменные из html
+  // переменные из html/ переменные, хранящие в себе DOM-элементы
   const buttonElement = document.getElementById('add-form-button');
   const commentElement = document.getElementById('comments');
   const nameInputElement = document.getElementById('name-input');
@@ -67,6 +67,7 @@
 
     for (const buttonElement of buttonElements) {
       buttonElement.addEventListener("click", () => {
+
         // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
         const index = buttonElement.dataset.index;
         // обращаемся к свойству isLiked объекта, который мы получили из массива Comments по индексу
@@ -83,16 +84,50 @@
     }
   };
 
+  const initButtonEvents = () => {
+    const changeButtonElements = document.querySelectorAll(".change-form-button");
+    for (const changeButtonElement of changeButtonElements) {
+      changeButtonElement.addEventListener("click", () => {
+        // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
+        const index = changeButtonElement.dataset.index;
+        const textarea = document.getElementById(`comment-input-${index}`);
+        // обращаемся к свойству isEdit объекта, который мы получили из массива Comments по индексу
+        if (comments[index].isEdit) {
+          comments[index].isEdit = false;
+          comments[index].comment = textarea.value;
+        } else {
+          comments[index].isEdit = true;
+        }
+        // вызываем рендер-функцию чтобы отобразить новые данные
+        renderComments();
+      });
+    }
+  };
+
+  const initCommentEvents = () => {
+    const liElements = document.querySelectorAll(".comment");
+    for (const liElement of liElements) {
+      liElement.addEventListener("click", () => {
+        // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
+        const index = liElement.dataset.index;
+        commentInputElement.value = comments[index].comment;
+        renderComments();
+      });
+    }
+  };
+
+
+
   // рендер-функция элементов списка комментариев, эта функция превращает данные в html разметку
   const renderComments = () => {
     const commentsHtml = comments.map((comment, index) => {
-      return `<li class="comment">
+      return `<li class="comment" data-index="${index}">
           <div class="comment-header">
             <div> ${comment.name} </div>
             <div> ${comment.date}</div>
           </div>
           <div class="comment-body">
-            ${comment.isEdit ? `<textarea class="comment-text">${comment.comment}</textarea>` : `<div class="comment-text">
+            ${comment.isEdit ? `<textarea id="comment-input-${index}" class="comment-text">${comment.comment}</textarea>` : `<div class="comment-text">
               ${comment.comment}
             </div>`}
           </div>
@@ -106,26 +141,19 @@
         </li>`
     }).join('');
 
-
-
     // кладем измененную разметку в inner HTML
     listElement.innerHTML = commentsHtml;
     // добавляет обработчик клика на элемент списка
     initEventListeners();
-
+    initButtonEvents();
+    initCommentEvents();
   };
   // вызываем рендер-функцию чтобы отобразить новые данные
   renderComments();
-  // находит все элементы списка
+  // находит кнопки лайков списка (все элементы списка - класс комментс)
   const likesElements = document.querySelectorAll(".likes");
 
 
-
-
-  initEventListeners();
-
-
-  renderComments();
 
   // подсвечивание поля ввода красным цветом при отсутствии данных
   buttonElement.addEventListener("click", () => {
@@ -144,9 +172,19 @@
 
     // добавление нового комментария
     comments.push({
-      name: nameInputElement.value,
+      name: nameInputElement.value
+        // Метод строки replaceAll заменяет все вхождения подстроки из первого аргумента на второй
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
       date: newDate,
-      comment: commentInputElement.value,
+      comment: commentInputElement.value
+        // во втором аргументе лежит безопасная HTML-строчка, ее можно вставлять в innerHTML
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
       like: 0,
       isLike: false,
       isEdit: false,
@@ -154,27 +192,7 @@
     // вызываем рендер-функцию чтобы отобразить новые данные
     renderComments();
 
-    // попытка сделать кнопки "редактировать" и "сохранить" интерактивными
-    const initButtonEvents = () => {
-      const changeButtonElements = document.querySelectorAll(".change-form-button");
 
-      for (const changeButtonElement of document.querySelectorAll(".change-form-button")) {
-        changeButtonElement.addEventListener("click", () => {
-          // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
-          const index = changeButtonElement.dataset.index;
-          // обращаемся к свойству isEdit объекта, который мы получили из массива Comments по индексу
-          if (comments[index].isEdit) {
-            comments[index].isEdit = false;
-          } else {
-            comments[index].isEdit = true;
-          }
-          // вызываем рендер-функцию чтобы отобразить новые данные
-          renderComments();
-        });
-      }
-    };
-
-    initEventListeners();
 
     // очищение полей ввода после добавления комментария
     document.getElementById('name-input').value = '';
