@@ -84,6 +84,8 @@
     }
   };
 
+
+  // редактирование комментария
   const initButtonEvents = () => {
     const changeButtonElements = document.querySelectorAll(".change-form-button");
     for (const changeButtonElement of changeButtonElements) {
@@ -104,13 +106,14 @@
     }
   };
 
+  // ответ на комментарий
   const initCommentEvents = () => {
     const liElements = document.querySelectorAll(".comment");
     for (const liElement of liElements) {
       liElement.addEventListener("click", () => {
         // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
         const index = liElement.dataset.index;
-        commentInputElement.value = comments[index].comment;
+        commentInputElement.value = '>' + ' ' + comments[index].comment + '   ' + comments[index].name + ', ';
         renderComments();
       });
     }
@@ -150,7 +153,7 @@
   };
   // вызываем рендер-функцию чтобы отобразить новые данные
   renderComments();
-  // находит кнопки лайков списка (все элементы списка - класс комментс)
+  // находит кнопки лайков списка (все элементы списка - class = ".comments")
   const likesElements = document.querySelectorAll(".likes");
 
 
