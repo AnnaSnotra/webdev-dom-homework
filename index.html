@@ -66,8 +66,8 @@
     const buttonElements = document.querySelectorAll(".like-button");
 
     for (const buttonElement of buttonElements) {
-      buttonElement.addEventListener("click", () => {
-
+      buttonElement.addEventListener("click", (event) => {
+        event.stopPropagation();
         // индекс = номер объекта в массиве, получаем из дата-атрибута кнопки на которую нажимаем
         const index = buttonElement.dataset.index;
         // обращаемся к свойству isLiked объекта, который мы получили из массива Comments по индексу
