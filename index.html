@@ -67,7 +67,7 @@
   const commentElement = document.getElementById('comments')
   const nameInputElement = document.getElementById('name-input')
   const commentInputElement = document.getElementById('comment-input')
-  const newDate = new Date()
+
 
 
   buttonElement.addEventListener("click", () => {
@@ -85,10 +85,11 @@
     }
 
     const oldCommentHtml = commentElement.innerHTML;
+    const newDate = new Date()
     commentElement.innerHTML = oldCommentHtml + `<li class="comment">
           <div class="comment-header">
             <div> ${nameInputElement.value} </div>
-            <div> ${newDate}</div>
+            <div> ${newDate.toLocaleString()}</div>
           </div>
           <div class="comment-body">
             <div class="comment-text">
